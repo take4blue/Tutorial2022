@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="xamarin1.Views.ItemsPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:xamarin1.ViewModels"  
+             xmlns:model="clr-namespace:xamarin1.Models"  
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+    </ContentPage.ToolbarItems>
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="Single">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <!--
+                      SwipeStartedとSwipeEndedはSwipeViewの単一選択のための仕組みのために用意している
+                    -->
+                    <SwipeView x:DataType="model:Item" SwipeEnded="SwipeView_SwipeEnded" SwipeStarted="SwipeView_SwipeStarted">
+                        <SwipeView.LeftItems>
+                            <SwipeItems>
+                                <SwipeItem
+                                   IconImageSource="delete.png"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DeleteCommand}"
+                                   CommandParameter="{Binding}"
+                                   Invoked="SwipeItem_Invoked"/>
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+                        <Grid HeightRequest="40">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="1"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Text}"
+                                VerticalTextAlignment="Center"
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                Grid.Row="0"
+                                FontSize="16">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <BoxView HeightRequest="1"
+                                BackgroundColor="Black"
+                                Grid.Row="1"
+                                VerticalOptions="End"/>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
