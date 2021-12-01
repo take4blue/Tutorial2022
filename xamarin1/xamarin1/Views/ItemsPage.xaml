@@ -26,12 +26,14 @@
                     <SwipeView x:DataType="model:Item" SwipeEnded="SwipeView_SwipeEnded" SwipeStarted="SwipeView_SwipeStarted">
                         <SwipeView.LeftItems>
                             <SwipeItems>
-                                <SwipeItem
-                                   IconImageSource="delete.png"
-                                   BackgroundColor="Red"
+                                <SwipeItemView
                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DeleteCommand}"
                                    CommandParameter="{Binding}"
-                                   Invoked="SwipeItem_Invoked"/>
+                                   Invoked="SwipeItem_Invoked">
+                                    <Image
+                                        Source="delete.png"
+                                        BackgroundColor="Red"/>
+                                </SwipeItemView>
                             </SwipeItems>
                         </SwipeView.LeftItems>
                         <Grid HeightRequest="40">
