@@ -23,7 +23,7 @@
                     <!--
                       SwipeStartedとSwipeEndedはSwipeViewの単一選択のための仕組みのために用意している
                     -->
-                    <SwipeView x:DataType="model:Item" SwipeEnded="SwipeView_SwipeEnded" SwipeStarted="SwipeView_SwipeStarted">
+                    <SwipeView x:DataType="local:ItemViewModel" SwipeEnded="SwipeView_SwipeEnded" SwipeStarted="SwipeView_SwipeStarted">
                         <SwipeView.LeftItems>
                             <SwipeItems>
                                 <SwipeItemView
@@ -41,7 +41,7 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="1"/>
                             </Grid.RowDefinitions>
-                            <Label Text="{Binding Text}"
+                            <Label Text="{Binding Data.Text}"
                                 VerticalTextAlignment="Center"
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 

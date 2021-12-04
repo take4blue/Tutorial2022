@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:xamarin1.ViewModels"  
+             xmlns:model="clr-namespace:xamarin1.Models"
+             Title="{Binding Title}"
+             x:Class="xamarin1.Views.ItemList">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddItemCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+            ItemsSource="{Binding Items}"
+            SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="local:ItemViewModel"
+                            BackgroundColor="{Binding IsBeingDragged, Converter={StaticResource DragColorConverter}}"
+                            >
+                        <Label Text="{Binding Data.Text}" 
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}"
+                            FontSize="16" />
+                        <Label Text="{Binding Data.Description}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemDetailTextStyle}"
+                            FontSize="13">
+                        </Label>
+                        <StackLayout.GestureRecognizers>
+                            <DragGestureRecognizer
+                                DragStartingCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragStart}"
+                                DragStartingCommandParameter="{Binding .}"
+                                DropCompletedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragEnd}"
+                                />
+                            <DropGestureRecognizer
+                                AllowDrop="True"
+                                DragLeaveCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragLeave}"
+                                DragLeaveCommandParameter="{Binding .}"
+                                DragOverCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragOver}"
+                                DragOverCommandParameter="{Binding .}"
+                                DropCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=Drop}"
+                                DropCommandParameter="{Binding .}"/>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
