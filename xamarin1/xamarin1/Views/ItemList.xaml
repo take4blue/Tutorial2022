@@ -35,9 +35,6 @@
                                 DropCompletedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragEnd}"
                                 />
                             <DropGestureRecognizer
-                                AllowDrop="True"
-                                DragLeaveCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragLeave}"
-                                DragLeaveCommandParameter="{Binding .}"
                                 DragOverCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragOver}"
                                 DragOverCommandParameter="{Binding .}"
                                 DropCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=Drop}"
