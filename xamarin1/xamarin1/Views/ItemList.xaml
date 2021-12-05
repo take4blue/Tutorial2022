@@ -40,6 +40,7 @@
                                 DragLeaveCommandParameter="{Binding .}"
                                 DragOverCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=DragOver}"
                                 DragOverCommandParameter="{Binding .}"
+                                DragOver="DragOver"
                                 DropCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=Drop}"
                                 DropCommandParameter="{Binding .}"/>
                         </StackLayout.GestureRecognizers>

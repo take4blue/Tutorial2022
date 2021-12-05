@@ -21,5 +21,10 @@ namespace xamarin1.Views
             base.OnAppearing();
             viewModel_.OnAppearing();
         }
+
+        private void DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.None;
+        }
     }
 }
