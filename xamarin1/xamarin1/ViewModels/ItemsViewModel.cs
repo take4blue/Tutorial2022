@@ -32,6 +32,7 @@ namespace xamarin1.ViewModels
         public Command<ItemViewModel> DeleteCommand { get; }
         public Command<ItemViewModel> DragStart { get; }
         public Command DragEnd { get; }
+        public Command<ItemViewModel> DragLeave { get; }
         public Command<ItemViewModel> DragOver { get; }
         public Command<ItemViewModel> Drop { get; }
 
@@ -45,6 +46,7 @@ namespace xamarin1.ViewModels
             DeleteCommand = new Command<ItemViewModel>(OnDeleteItem);
             DragStart = new Command<ItemViewModel>(OnDragStart);
             DragEnd = new Command(OnDragEnd);
+            DragLeave = new Command<ItemViewModel>(OnDragLeave);
             DragOver = new Command<ItemViewModel>(OnDragOver);
             Drop = new Command<ItemViewModel>(OnDrop);
         }
@@ -110,6 +112,11 @@ namespace xamarin1.ViewModels
                 draggingItem_.IsBeingDragged = false;
                 draggingItem_ = null;
             }
+        }
+
+        private void OnDragLeave(ItemViewModel item)
+        {
+            Debug.WriteLine($"OnDragLeave: {item?.Data.Text}");
         }
 
         private void OnDragOver(ItemViewModel item)
