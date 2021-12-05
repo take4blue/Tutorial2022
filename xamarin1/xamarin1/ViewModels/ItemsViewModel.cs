@@ -16,9 +16,21 @@ namespace xamarin1.ViewModels
     /// </summary>
     public class ItemsViewModel : BaseViewModel
     {
-        private ItemViewModel _selectedItem;
-        private ItemViewModel draggingItem_;
+        /// <summary>
+        /// 表示データの管理用
+        /// </summary>
         ObservableCollection<ItemViewModel> items_;
+
+        /// <summary>
+        /// ドラッグ中のアイテム
+        /// </summary>
+        private ItemViewModel draggingItem_;
+
+        /// <summary>
+        /// 通過中のアイテム</br>
+        /// 重複処理をしないために使用している
+        /// </summary>
+        private ItemViewModel dragOverItem_;
 
         public ObservableCollection<ItemViewModel> Items
         {
@@ -86,16 +98,6 @@ namespace xamarin1.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
-            SelectedItem = null;
-        }
-
-        public ItemViewModel SelectedItem
-        {
-            get => _selectedItem;
-            set {
-                SetProperty(ref _selectedItem, value);
-                EditSelectedItem(value);
-            }
         }
 
         private void OnDragStart(ItemViewModel item)
@@ -105,24 +107,40 @@ namespace xamarin1.ViewModels
             Items.ForEach(i => i.IsBeingDragged = item == i);
         }
 
+        private void DragEndProcess()
+        {
+            if (draggingItem_ != null) {
+                draggingItem_.IsBeingDragged = false;
+            }
+            draggingItem_ = null;
+            dragOverItem_ = null;
+        }
+
         private void OnDragEnd()
         {
             Debug.WriteLine($"OnDragEnd");
-            if (draggingItem_ != null) {
-                draggingItem_.IsBeingDragged = false;
-                draggingItem_ = null;
-            }
+            DragEndProcess();
         }
 
         private void OnDragLeave(ItemViewModel item)
         {
             Debug.WriteLine($"OnDragLeave: {item?.Data.Text}");
+            dragOverItem_ = null;
+        }
+
+        private void OnDrop(ItemViewModel item)
+        {
+            Debug.WriteLine($"OnDrop: {item?.Data.Text}");
+            DragEndProcess();
+            // ここで必要であればDataStore内のItemの順序をDrag&Dropで行った結果で反映させる
         }
 
         private void OnDragOver(ItemViewModel item)
         {
             Debug.WriteLine($"OnDragOver1: {item?.Data.Text}");
-            if (item != null && item != draggingItem_) {
+            // itemがdragOverItem_と一致していた場合は位置変更を行わない
+            // 同じ動作をさせないため。
+            if (item != null && item != draggingItem_ && item != dragOverItem_) {
                 // 自分のアイテムより後ろにあるアイテムの場合は、一つ後に挿入。
                 var overItemPos = Items.IndexOf(item);
                 var myItemPos = Items.IndexOf(draggingItem_);
@@ -137,13 +155,7 @@ namespace xamarin1.ViewModels
                     Items.Insert(Items.IndexOf(item) + 1, draggingItem_);
                 }
             }
-        }
-
-        private void OnDrop(ItemViewModel item)
-        {
-            Debug.WriteLine($"OnDrop: {item?.Data.Text}");
-            draggingItem_.IsBeingDragged = false;
-            draggingItem_ = null;
+            dragOverItem_ = item;
         }
 
         /// <summary>
