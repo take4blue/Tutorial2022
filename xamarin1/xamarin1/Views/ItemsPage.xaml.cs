@@ -87,7 +87,7 @@ namespace xamarin1.Views
         {
             if (!CloseSwipe()) {
                 var target = sender as BindableObject;
-                viewModel_.EditItem.Execute(target.BindingContext as Item);
+                viewModel_.EditItem.Execute(target.BindingContext as ItemViewModel);
             }
         }
 
