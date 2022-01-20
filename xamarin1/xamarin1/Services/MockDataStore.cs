@@ -47,6 +47,35 @@ namespace xamarin1.Services
             return await Task.FromResult(true);
         }
 
+        public async Task<string> NextItemAsync(string id)
+        {
+            var no = items.FindLastIndex(s => s.Id == id);
+            if (no == -1) {
+                no = 0;
+            }
+            else if (no < items.Count - 1) {
+                no++;
+            }
+            return await Task.FromResult(items[no].Id);
+        }
+
+        public async Task<string> PrevItemAsync(string id)
+        {
+            var no = items.FindLastIndex(s => s.Id == id);
+            if (no == -1) {
+                no = 0;
+            }
+            else if (no != 0) {
+                no--;
+            }
+            return await Task.FromResult(items[no].Id);
+        }
+
+        public async Task<int> CountItemAsync()
+        {
+            return await Task.FromResult(items.Count());
+        }
+
         public async Task<Item> GetItemAsync(string id)
         {
             return await Task.FromResult(items.FirstOrDefault(s => s.Id == id));

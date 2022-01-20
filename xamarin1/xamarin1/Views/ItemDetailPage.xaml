@@ -9,6 +9,10 @@
         <Label Text="{Binding Text}" FontSize="Small"/>
         <Label Text="Description:" FontSize="Medium" />
         <Label Text="{Binding Description}" FontSize="Small"/>
+        <StackLayout.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Command="{Binding RightPage}"/>
+            <SwipeGestureRecognizer Direction="Right" Command="{Binding LeftPage}"/>
+        </StackLayout.GestureRecognizers>
     </StackLayout>
     
 </ContentPage>

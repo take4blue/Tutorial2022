@@ -14,6 +14,9 @@ namespace xamarin1.ViewModels
         private string description;
         public string Id { get; set; }
 
+        public Command LeftPage { get; private set; }
+        public Command RightPage { get; private set; }
+
         public string Text
         {
             get => text;
@@ -35,6 +38,23 @@ namespace xamarin1.ViewModels
                 itemId = value;
                 LoadItemId(value);
             }
+        }
+
+        public ItemDetailViewModel()
+        {
+            LeftPage = new Command(DoLeftPage);
+            RightPage = new Command(DoRightPage);
+        }
+
+
+        async void DoLeftPage()
+        {
+            ItemId = await DataStore.PrevItemAsync(ItemId);
+        }
+
+        async void DoRightPage()
+        {
+            ItemId = await DataStore.NextItemAsync(ItemId);
         }
 
         public async void LoadItemId(string itemId)
