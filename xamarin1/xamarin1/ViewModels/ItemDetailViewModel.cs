@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using xamarin1.Models;
+using System.Collections.Generic;
 
 namespace xamarin1.ViewModels
 {
@@ -10,8 +11,10 @@ namespace xamarin1.ViewModels
     public class ItemDetailViewModel : BaseViewModel
     {
         private string itemId;
+        private int position_;
         private string text;
         private string description;
+        private List<int> dummy_ = new List<int>();
         public string Id { get; set; }
 
         public Command LeftPage { get; private set; }
@@ -40,10 +43,34 @@ namespace xamarin1.ViewModels
             }
         }
 
+        public int Position
+        {
+            get => position_;
+            set {
+                if (value >= 0 && value < DataStore.CountItem()) {
+                    SetProperty(ref position_, value);
+                    LoadItemId(position_);
+                }
+            }
+        }
+
+        public int Count
+        {
+            get => DataStore.CountItem();
+        }
+
+        public List<int> Dummy
+        {
+            get => dummy_;
+        }
+
         public ItemDetailViewModel()
         {
             LeftPage = new Command(DoLeftPage);
             RightPage = new Command(DoRightPage);
+            for (int i = 0; i < DataStore.CountItem(); i++) {
+                dummy_.Add(i);
+            }
         }
 
 
@@ -57,10 +84,10 @@ namespace xamarin1.ViewModels
             ItemId = await DataStore.NextItemAsync(ItemId);
         }
 
-        public async void LoadItemId(string itemId)
+        public async void LoadItemId(int no)
         {
             try {
-                var item = await DataStore.GetItemAsync(itemId);
+                var item = await DataStore.GetItemAsync(no);
                 Id = item.Id;
                 Text = item.Text;
                 Description = item.Description;
@@ -68,6 +95,11 @@ namespace xamarin1.ViewModels
             catch (Exception) {
                 Debug.WriteLine("Failed to Load Item");
             }
+        }
+
+        public async void LoadItemId(string itemId)
+        {
+            Position = await DataStore.FindLastIndex(itemId);
         }
     }
 }

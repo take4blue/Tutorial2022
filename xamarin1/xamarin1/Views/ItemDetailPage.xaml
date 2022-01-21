@@ -9,6 +9,15 @@
         <Label Text="{Binding Text}" FontSize="Small"/>
         <Label Text="Description:" FontSize="Medium" />
         <Label Text="{Binding Description}" FontSize="Small"/>
+        <IndicatorView
+            Count="{Binding Count}"
+            Position="{Binding Position}"
+            ItemsSource="{Binding Dummy}"
+            Margin="0,40"
+            IndicatorColor="LightGray"
+            SelectedIndicatorColor="DarkGray"
+            HorizontalOptions="Center">
+        </IndicatorView>
         <StackLayout.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Left" Command="{Binding RightPage}"/>
             <SwipeGestureRecognizer Direction="Right" Command="{Binding LeftPage}"/>

@@ -71,9 +71,9 @@ namespace xamarin1.Services
             return await Task.FromResult(items[no].Id);
         }
 
-        public async Task<int> CountItemAsync()
+        public int CountItem()
         {
-            return await Task.FromResult(items.Count());
+            return items.Count();
         }
 
         public async Task<Item> GetItemAsync(string id)
@@ -84,6 +84,16 @@ namespace xamarin1.Services
         public async Task<IEnumerable<Item>> GetItemsAsync(bool forceRefresh = false)
         {
             return await Task.FromResult(items);
+        }
+
+        public async Task<int> FindLastIndex(string id)
+        {
+            return await Task.FromResult(items.FindLastIndex(s => s.Id == id));
+        }
+
+        public async Task<Item> GetItemAsync(int no)
+        {
+            return await Task.FromResult(items[no]);
         }
     }
 }
