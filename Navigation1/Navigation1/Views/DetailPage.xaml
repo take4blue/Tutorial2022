@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Navigation1.ViewModels"
+             Disappearing="DisappearPage"
+             x:Class="Navigation1.Views.DetailPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="設定" Command="{Binding DetailSet}"/>
+    </ContentPage.ToolbarItems>
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding DetailCancel}"
+            TextOverride="取消"/>
+    </Shell.BackButtonBehavior>
+    
+    <ContentPage.Content>
+        <StackLayout x:DataType="vm:DetailViewModel">
+            <Entry Text="{Binding Text}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
